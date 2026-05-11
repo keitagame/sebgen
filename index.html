@@ -42,14 +42,16 @@
 <!-- テキスト2 -->
 <div class="group">
   <h3>ボリューム</h3>
+<!-- テキスト2 の中に追加 -->
 
+<input type="file" id="fontFile2" accept=".ttf,.otf">
   <input type="text" id="textInput2" value="99">
 
-  <input type="number" id="fontSize2" value="219">
+  <input type="number" id="fontSize2" value="319">
 
   <input type="color" id="fontColor2" value="#000000">
 
-  <input type="number" id="posX2" value="900">
+  <input type="number" id="posX2" value="800">
 
   <input type="number" id="posY2" value="1225">
 </div>
@@ -78,6 +80,8 @@
 
 <script>
   // 追加
+  // 追加
+let loadedFontName2 = "既定2";
 let overlayImage = null;
 let backgroundImage = null;
 const canvas = document.getElementById("canvas");
@@ -93,13 +97,41 @@ async function loadDefaultFont() {
 
   await font.load();
   document.fonts.add(font);
+const font2 = new FontFace(
+    loadedFontName2,
+    'url("./AbrilFatface-Regular.ttf")'
+  );
 
+  await font2.load();
+  document.fonts.add(font2);
   draw();
 }
 
 loadDefaultFont();
 // 追加
+// 追加
 
+// テキスト2用フォント読み込み
+document.getElementById("fontFile2").addEventListener("change", async (e) => {
+
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const fontData = await file.arrayBuffer();
+
+  loadedFontName2 = "localFont2_" + Date.now();
+
+  const font = new FontFace(
+    loadedFontName2,
+    fontData
+  );
+
+  await font.load();
+
+  document.fonts.add(font);
+
+  draw();
+});
 // 画像読み込み
 document.getElementById("imageFile").addEventListener("change", (e) => {
   const file = e.target.files[0];
@@ -245,7 +277,10 @@ const y2 =
   Number(document.getElementById("posY2").value);
 
 ctx.fillStyle = color2;
-ctx.font = `${size2}px ${loadedFontName}`;
+//ctx.font = `${size2}px ${loadedFontName}`;
+// 置き換え
+
+ctx.font = `${size2}px ${loadedFontName2}`;
 ctx.fillText(text2, x2, y2);
 }
 </script>
