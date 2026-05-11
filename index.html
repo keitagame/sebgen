@@ -13,8 +13,8 @@
 
 <div id="controls">
   <input type="file" id="fontFile" accept=".ttf,.otf">
-  <input type="text" id="textInput" placeholder="テキスト" value="Hello Canvas">
-  <input type="number" id="fontSize" placeholder="サイズ(px)" value="120">
+  <input type="text" id="textInput" placeholder="テキスト" value="SUPER EUROBEAT">
+  <input type="number" id="fontSize" placeholder="サイズ(px)" value="190">
   <input type="color" id="fontColor" value="#000000">
   <input type="number" id="posX" placeholder="X位置" value="100">
   <input type="number" id="posY" placeholder="Y位置" value="200">
@@ -26,7 +26,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-let loadedFontName = "myfont";
+let loadedFontName = "既定";
 
 async function loadDefaultFont() {
   const font = new FontFace(
