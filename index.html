@@ -26,7 +26,21 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-let loadedFontName = null;
+let loadedFontName = "myfont";
+
+async function loadDefaultFont() {
+  const font = new FontFace(
+    loadedFontName,
+    'url("./super-eurobeat.otf")'
+  );
+
+  await font.load();
+  document.fonts.add(font);
+
+  draw();
+}
+
+loadDefaultFont();
 
 // ローカルフォント読み込み
 document.getElementById("fontFile").addEventListener("change", async (e) => {
@@ -43,7 +57,6 @@ document.getElementById("fontFile").addEventListener("change", async (e) => {
   draw();
 });
 
-// 入力が変わったら描画
 ["textInput", "fontSize", "fontColor", "posX", "posY"].forEach(id => {
   document.getElementById(id).addEventListener("input", draw);
 });
@@ -58,7 +71,7 @@ function draw() {
   const y = Number(document.getElementById("posY").value);
 
   ctx.fillStyle = color;
-  ctx.font = `${size}px ${loadedFontName || "sans-serif"}`;
+  ctx.font = `${size}px ${loadedFontName}`;
   ctx.fillText(text, x, y);
 }
 </script>
