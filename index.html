@@ -90,12 +90,28 @@
 
   <label>画像高さ</label>
   <input type="number" id="imgHeight" value="400">
+
 </div>
+<!-- controls 内に追加 -->
+
+<button id="downloadBtn">画像をダウンロード</button>
 </div>
 
 <canvas id="canvas" width="1280" height="1280"></canvas>
 
 <script>
+  // 追加
+
+document.getElementById("downloadBtn").addEventListener("click", () => {
+
+  const link = document.createElement("a");
+
+  link.download = "image.png";
+
+  link.href = canvas.toDataURL("image/png");
+
+  link.click();
+});
   // 追加
   // 追加
   // 追加
