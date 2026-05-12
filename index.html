@@ -18,6 +18,35 @@
   <input type="color" id="fontColor" value="#000000">
   <input type="number" id="posX" placeholder="X位置" value="44">
   <input type="number" id="posY" placeholder="Y位置" value="211">
+  <!-- テキスト1 の中に追加 -->
+
+<label>アウトライン色</label>
+<input type="color" id="outlineColor" value="#ffffff">
+
+<label>アウトライン幅</label>
+<input type="number" id="outlineWidth" value="8">
+
+<label>横グラデーション開始</label>
+<input type="color" id="gradX1" value="#ff0000">
+
+<label>横グラデーション終了</label>
+<input type="color" id="gradX2" value="#ffff00">
+
+<label>縦グラデーション開始</label>
+<input type="color" id="gradY1" value="#ffffff">
+
+<label>縦グラデーション終了</label>
+<input type="color" id="gradY2" value="#000000">
+
+<label>
+  <input type="checkbox" id="enableGradientX" checked>
+  横グラデーション
+</label>
+
+<label>
+  <input type="checkbox" id="enableGradientY">
+  縦グラデーション
+</label>
   <!-- controls 内に追加 -->
 
 <!-- 背景 -->
@@ -265,7 +294,19 @@ document.getElementById("fontFile").addEventListener("change", async (e) => {
   "bgWidth",
   "bgHeight",
   // forEach 配列に追加
+// forEach 配列に追加
 
+"outlineColor",
+"outlineWidth",
+
+"gradX1",
+"gradX2",
+
+"gradY1",
+"gradY2",
+
+"enableGradientX",
+"enableGradientY",
 "textInput3",
 "fontSize3",
 "fontColor3",
@@ -320,6 +361,7 @@ if (overlayImage) {
     imgHeight
   );
 }
+/*
   const text = document.getElementById("textInput").value;
   const size = document.getElementById("fontSize").value;
   const color = document.getElementById("fontColor").value;
@@ -330,7 +372,121 @@ if (overlayImage) {
   ctx.font = `${size}px ${loadedFontName}`;
   ctx.fillText(text, x, y);
   // draw() の最後に追加
+*/
+// テキスト1描画部分を置き換え
 
+const text = document.getElementById("textInput").value;
+
+const size =
+  document.getElementById("fontSize").value;
+
+const x =
+  Number(document.getElementById("posX").value);
+
+const y =
+  Number(document.getElementById("posY").value);
+
+ctx.font = `${size}px ${loadedFontName}`;
+
+const metrics = ctx.measureText(text);
+
+const textWidth = metrics.width;
+
+const textHeight = Number(size);
+
+// グラデーション
+let fillStyle =
+  document.getElementById("fontColor").value;
+
+const enableGradientX =
+  document.getElementById("enableGradientX").checked;
+
+const enableGradientY =
+  document.getElementById("enableGradientY").checked;
+
+if (enableGradientX && enableGradientY) {
+
+  const grad = ctx.createLinearGradient(
+    x,
+    y - textHeight,
+    x + textWidth,
+    y
+  );
+
+  grad.addColorStop(
+    0,
+    document.getElementById("gradX1").value
+  );
+
+  grad.addColorStop(
+    0.5,
+    document.getElementById("gradY1").value
+  );
+
+  grad.addColorStop(
+    1,
+    document.getElementById("gradX2").value
+  );
+
+  fillStyle = grad;
+
+} else if (enableGradientX) {
+
+  const grad = ctx.createLinearGradient(
+    x,
+    y,
+    x + textWidth,
+    y
+  );
+
+  grad.addColorStop(
+    0,
+    document.getElementById("gradX1").value
+  );
+
+  grad.addColorStop(
+    1,
+    document.getElementById("gradX2").value
+  );
+
+  fillStyle = grad;
+
+} else if (enableGradientY) {
+
+  const grad = ctx.createLinearGradient(
+    x,
+    y - textHeight,
+    x,
+    y
+  );
+
+  grad.addColorStop(
+    0,
+    document.getElementById("gradY1").value
+  );
+
+  grad.addColorStop(
+    1,
+    document.getElementById("gradY2").value
+  );
+
+  fillStyle = grad;
+}
+
+// アウトライン
+ctx.lineJoin = "round";
+
+ctx.lineWidth =
+  Number(document.getElementById("outlineWidth").value);
+
+ctx.strokeStyle =
+  document.getElementById("outlineColor").value;
+
+ctx.strokeText(text, x, y);
+
+// 本体
+ctx.fillStyle = fillStyle;
+ctx.fillText(text, x, y);
 // テキスト2
 const text2 =
   document.getElementById("textInput2").value;
